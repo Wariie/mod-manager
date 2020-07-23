@@ -1,0 +1,101 @@
+<!-- Headers -->
+{{define "head"}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.8.2-->
+    <link rel="stylesheet" href="{{.path}}/ressources/css/bulma.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{.path}}/ressources/css/personal.css" type="text/css" />
+{{end}}
+
+<!-- Navigation bar -->
+{{define "nav"}}
+<header class="hero">
+  <div class="hero-head">
+    <nav class="navbar has-shadow is-dark" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item router-link-active" href="#/"></a>
+        </div>
+    
+        <div id="navbarExampleTransparentExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="#/">
+              <span class="icon">
+                <i class="fas fa-info"></i>
+              </span>
+              <span>Home</span>
+            </a>
+            <a class="navbar-item" href="#modules">
+              <span class="icon">
+                <i class="fas fa-file-alt"></i>
+              </span>
+              <span>Modules</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+{{end}}
+
+{{define "side_menu"}}
+  <aside class="column is-2 aside">
+    <nav class="is-primary menu">
+     <p class="menu-label">Module</p>
+     <ul class="menu-list">
+       {{range .mods}}
+        <li class="menu-item">
+          <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
+        </li>
+       {{end}}
+     </ul>
+    </nav>
+  </aside>
+{{end}}
+
+{{define "main"}}
+  <main class="column main">
+    <div class="columns is-multiline">
+      <div class="column">
+        <div class="box notification">
+          <div>
+            <p class="heading">Modules Started</p>
+            <p class="title">{{.mod_number}}</p>
+           </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box notification">
+          <div>
+            <p class="heading">Modules Running</p>
+            <p class="title">{{.mod_number_running}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+    {{range .mods}} 
+      <div class="column">
+        <div class="box notification is-dark">
+          <div>
+            <p class="heading">{{.NAME}}</p>
+            <p class="title is-success">{{.STATE}}</p>
+            <a href="{{$.BINDING}}">Go To</a>
+          </div>
+        </div>
+      </div>
+    {{end}}
+    </div>
+  </main>
+{{end}}
+
+{{define "content"}}
+  <div class="wrapper">
+    <div class="columns">
+      {{template "side_menu" .}}
+      {{template "main" .}}
+    </div>
+  </div>
+{{end}}
