@@ -30,7 +30,8 @@ func main() {
 func index(ctx *gin.Context) {
 
 	var mods map[string]Module
-	mods = getModules(modbase.GetModManager().GetMod())
+	me := modbase.GetModManager().GetMod()
+	mods = getModules(me)
 	log.Println(mods)
 
 	running := 0
@@ -41,8 +42,8 @@ func index(ctx *gin.Context) {
 	}
 
 	ctx.HTML(http.StatusOK, "index", gin.H{
-		"title":              "mod-manager",
-		"path":               "/hub",
+		"title":              me.Name,
+		"path":               "/" + me.Name,
 		"mod_number":         len(mods),
 		"mod_number_running": running,
 		"mods":               mods,
@@ -52,7 +53,7 @@ func index(ctx *gin.Context) {
 
 func getModules(m *modbase.ModuleImpl) map[string]Module {
 	var cr com.CommandRequest
-	cr.Generate(m.Name, "mod-manager", "Get:List:Module")
+	cr.Generate(m.Name, "hub", "Get:List:Module")
 	srv := com.Server{IP: modbase.HubAddress, Port: modbase.HubPort, Path: "", Protocol: "http"}
 	var mods map[string]Module
 	jsonData, err := com.SendRequest(srv, &cr, true)
