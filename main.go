@@ -21,7 +21,6 @@ func main() {
 	mod.InstanceName = "module-manager"
 	modbase.HubAddress = "localhost"
 	modbase.ModulePort = "2001"
-
 	mod.Init()
 	mod.Register("GET", "/mod-manager", index, "WEB")
 	mod.Run()
@@ -61,6 +60,7 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 		log.Println("Error retrieving Modules :", err)
 	}
 	json.NewDecoder(bytes.NewBufferString(jsonData)).Decode(&mods)
+
 	return mods
 }
 
@@ -72,7 +72,7 @@ type Module struct {
 	EXE     ModuleExecConfig
 	BINDING ServerConfig
 	STATE   ModuleState
-	pk      string
+	PK      string
 }
 
 /*ModuleExecConfig - Module exec file informations */

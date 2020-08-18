@@ -76,18 +76,26 @@
       </div>
     </div>
     <div class="columns">
-    {{range .mods}} 
+    {{range $m := .mods}} 
       <div class="column">
         <div class="box notification is-dark">
           <div>
             <p class="heading">{{.NAME}}</p>
             <p class="title is-success">{{.STATE}}</p>
-            <a href="{{$.BINDING}}">Go To</a>
+            <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
+            </br ></br >
+            <button class="button is-light" onclick="command({{.PK}}, 'Restart');">Restart</button>
+            <button class="button is-light" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
+            <button class="button is-light" onclick="command({{.PK}}, 'Log');">Log</button>
           </div>
         </div>
       </div>
     {{end}}
     </div>
+    <div class="columns">
+
+    </div>
+    {{template "console" .}}
   </main>
 {{end}}
 
@@ -98,4 +106,20 @@
       {{template "main" .}}
     </div>
   </div>
+{{end}}
+
+{{define "console"}}
+    <div id = "backgroundC" class="column">
+      <div id = "console">
+          <p id = "consoletext">
+              Console />
+          </p>
+          <textarea rows = "1" id = "textinput" onkeydown = "checkInput();"></textarea>
+      </div>
+  </div>
+{{end}}
+
+{{define "script"}}
+  <script src="{{.path}}/ressources/js/jquery.js" type="text/javascript"></script>
+  <script src="{{.path}}/ressources/js/modules-action.js" type="text/javascript"></script>
 {{end}}
