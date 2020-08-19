@@ -54,7 +54,7 @@ func index(ctx *gin.Context) {
 
 func getModules(m *modbase.ModuleImpl) map[string]Module {
 	var cr com.CommandRequest
-	cr.Generate("List", m.Name, "hub", modbase.GetModManager().GetSecret())
+	cr.Generate("List", "hub", m.Name, modbase.GetModManager().GetSecret())
 	srv := com.Server{IP: modbase.HubAddress, Port: modbase.HubPort, Path: "", Protocol: "http"}
 	var mods map[string]Module
 	jsonData, err := com.SendRequest(srv, &cr, true)
