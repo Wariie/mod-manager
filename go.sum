@@ -64,6 +64,8 @@ github.com/Wariie/go-woxy/modbase v0.0.0-20200818234448-576ba48a15be h1:dkXDG8vs
 github.com/Wariie/go-woxy/modbase v0.0.0-20200818234448-576ba48a15be/go.mod h1:x+FiyrS9R1y/nOkhWR+fAWGYgAF1YjfWektK6YUQ2ws=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200819221122-12480ad99520 h1:8voLbhKqvQn2dvCcjBRtM2cXHV1qgicdhrDsXwAlR20=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200819221122-12480ad99520/go.mod h1:x+FiyrS9R1y/nOkhWR+fAWGYgAF1YjfWektK6YUQ2ws=
+github.com/Wariie/go-woxy/modbase v0.0.0-20200819222422-867b8deb8f51 h1:MVnxkxHLj/vMpLPd5fjsjPhEALsVHP0RTZow/DhmDac=
+github.com/Wariie/go-woxy/modbase v0.0.0-20200819222422-867b8deb8f51/go.mod h1:ZkWrlmE7zual2BQBVik78uWBm/pGdc/39NWk0dRmz38=
 github.com/Wariie/go-woxy/tools v0.0.0-20200721105108-6ed13a942a59/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
 github.com/Wariie/go-woxy/tools v0.0.0-20200722180642-6fd48aac312e h1:aHDp7boeFVpYmtR0dqhvwz+inEla7idmu1uEqXKNuqU=
 github.com/Wariie/go-woxy/tools v0.0.0-20200722180642-6fd48aac312e/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
@@ -87,6 +89,8 @@ github.com/Wariie/go-woxy/tools v0.0.0-20200728151734-a542ad3d1b9f h1:VTGZGsuiUy
 github.com/Wariie/go-woxy/tools v0.0.0-20200728151734-a542ad3d1b9f/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
 github.com/Wariie/go-woxy/tools v0.0.0-20200818234448-576ba48a15be h1:E5yC0knvO1azAeVi9yFoF5Nze1VwY1fJ8QKj1DQZQqA=
 github.com/Wariie/go-woxy/tools v0.0.0-20200818234448-576ba48a15be/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
+github.com/Wariie/go-woxy/tools v0.0.0-20200819221122-12480ad99520 h1:zyhqMAulv1ch39zykapglti789p8IsoWS8XbiqmmaIo=
+github.com/Wariie/go-woxy/tools v0.0.0-20200819221122-12480ad99520/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
