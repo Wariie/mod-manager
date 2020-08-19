@@ -24,6 +24,8 @@ github.com/Wariie/go-woxy/com v0.0.0-20200818225913-bab77e691b2c h1:IV6aWvF/x0Vw
 github.com/Wariie/go-woxy/com v0.0.0-20200818225913-bab77e691b2c/go.mod h1:gW2ULgRwM3Zh5yeFPfOzr06i9sx10M1vdKISq7iw9eI=
 github.com/Wariie/go-woxy/com v0.0.0-20200818234448-576ba48a15be h1:7cFgPOOh09ZcKzio+estigEuYfqzT0XWlhcehr9jah4=
 github.com/Wariie/go-woxy/com v0.0.0-20200818234448-576ba48a15be/go.mod h1:gW2ULgRwM3Zh5yeFPfOzr06i9sx10M1vdKISq7iw9eI=
+github.com/Wariie/go-woxy/com v0.0.0-20200819222422-867b8deb8f51 h1:JKEpaLcLOgFsgZSaLf5VNpL2IvARswrvGbLx7E4TwHc=
+github.com/Wariie/go-woxy/com v0.0.0-20200819222422-867b8deb8f51/go.mod h1:gW2ULgRwM3Zh5yeFPfOzr06i9sx10M1vdKISq7iw9eI=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200722220757-7af689164587 h1:mTi+aFxPOKqLGzdgaAzcENBWyurkrTOIUVbrGEmK+VM=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200722220757-7af689164587/go.mod h1:RMJ9r4kqentMAnBAXk2/v+iiytCfPKrFEe94Xw9nfUA=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200723123809-4a8967b10d7c h1:BkXYZEZ75mTC90s9xTIwEqFBHblbY4yZDo0jNA2bDAw=
@@ -66,6 +68,8 @@ github.com/Wariie/go-woxy/modbase v0.0.0-20200819221122-12480ad99520 h1:8voLbhKq
 github.com/Wariie/go-woxy/modbase v0.0.0-20200819221122-12480ad99520/go.mod h1:x+FiyrS9R1y/nOkhWR+fAWGYgAF1YjfWektK6YUQ2ws=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200819222422-867b8deb8f51 h1:MVnxkxHLj/vMpLPd5fjsjPhEALsVHP0RTZow/DhmDac=
 github.com/Wariie/go-woxy/modbase v0.0.0-20200819222422-867b8deb8f51/go.mod h1:ZkWrlmE7zual2BQBVik78uWBm/pGdc/39NWk0dRmz38=
+github.com/Wariie/go-woxy/modbase v0.0.0-20200819222710-6e612a1c0aee h1:Mj5jnFZhSt+JzBuEi8ARfx05J+UBjOitOF2GxwGMYak=
+github.com/Wariie/go-woxy/modbase v0.0.0-20200819222710-6e612a1c0aee/go.mod h1:TZw0yfBovHABrmBWFXmlqKsm8wt30kNESse49+r10g4=
 github.com/Wariie/go-woxy/tools v0.0.0-20200721105108-6ed13a942a59/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
 github.com/Wariie/go-woxy/tools v0.0.0-20200722180642-6fd48aac312e h1:aHDp7boeFVpYmtR0dqhvwz+inEla7idmu1uEqXKNuqU=
 github.com/Wariie/go-woxy/tools v0.0.0-20200722180642-6fd48aac312e/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
