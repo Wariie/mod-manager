@@ -46,9 +46,11 @@
      <p class="menu-label">Module</p>
      <ul class="menu-list">
        {{range .mods}}
-        <li class="menu-item">
-          <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
-        </li>
+          {{if ne .NAME "hub"}}
+          <li class="menu-item">
+            <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
+          </li>
+          {{end}}
        {{end}}
      </ul>
     </nav>
@@ -77,6 +79,7 @@
     </div>
     <div class="columns">
     {{range $m := .mods}} 
+      {{if ne .NAME "hub"}}
       <div class="column">
         <div class="box notification is-dark">
           <div>
@@ -90,6 +93,7 @@
           </div>
         </div>
       </div>
+      {{end}}
     {{end}}
     </div>
     <div class="columns">
