@@ -16,14 +16,15 @@ var mod *modbase.ModuleImpl
 
 func main() {
 	var m modbase.ModuleImpl
-	mod = &m
-	mod.Name = "mod-manager"
-	mod.InstanceName = "module-manager"
+	modbase.GetModManager().SetMod(&m)
+	m.Name = "mod-manager"
+	m.InstanceName = "module-manager"
 	modbase.HubAddress = "localhost"
 	modbase.ModulePort = "2001"
-	mod.Init()
-	mod.Register("GET", "/mod-manager", index, "WEB")
-	mod.Run()
+
+	m.Init()
+	m.Register("GET", "/mod-manager", index, "WEB")
+	m.Run()
 }
 
 func index(ctx *gin.Context) {

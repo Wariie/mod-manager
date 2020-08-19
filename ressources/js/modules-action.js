@@ -16,7 +16,7 @@
         data: b,
         dataType: "html",
         success: function(data) {
-            $("#textinput").append("Command - " + command + " : " + data);
+            $('#textinput').val($('#textinput').val()+"Command - " + command + " : " + data);
         },
         error: function() {
             alert('Error occured');
