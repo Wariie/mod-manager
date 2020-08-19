@@ -47,6 +47,7 @@ func index(ctx *gin.Context) {
 		"mod_number":         len(mods),
 		"mod_number_running": running,
 		"mods":               mods,
+		"secret":             modbase.GetModManager().GetSecret(),
 	})
 	log.Println("GET / mod.v0", ctx.Request.RemoteAddr)
 }

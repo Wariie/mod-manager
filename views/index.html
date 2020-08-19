@@ -120,6 +120,7 @@
 {{end}}
 
 {{define "script"}}
+  <script>setSecret({{.secret}});</script>
   <script src="{{.path}}/ressources/js/jquery.js" type="text/javascript"></script>
   <script src="{{.path}}/ressources/js/modules-action.js" type="text/javascript"></script>
 {{end}}

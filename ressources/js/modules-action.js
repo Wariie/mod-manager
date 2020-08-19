@@ -1,12 +1,15 @@
 
   var myName = "mod-manager";
 
+  var mySecret = "";
+
   function command(hash, command) {
     var pl = new Object();
     pl.Hash = hash;
     pl.Name = myName;
     pl.Command = command;
     pl.Type = "Command";
+    pl.Secret = mySecret;
 
     var b = JSON.stringify(pl);
     console.log(b);
@@ -39,4 +42,8 @@
 function addLine(line) {
     var textNode = document.createTextNode(line);
     document.getElementById("consoletext").appendChild(textNode);
+}
+
+function setScret(s) {
+    mySecret = s;
 }
