@@ -11,20 +11,7 @@
     pl.Type = "Command";
     pl.Secret = mySecret;
 
-    var b = JSON.stringify(pl);
-    console.log(b);
-    $.ajax({
-        type: "POST",
-        url: "/cmd",
-        data: b,
-        dataType: "html",
-        success: function(data) {
-            $('#textinput').val($('#textinput').val()+"Command - " + command + " : " + data + "<br>");
-        },
-        error: function() {
-            alert('Error occured');
-        }
-    });
+    sendCommand(pl);
   }
 
   function checkInput() {
@@ -44,6 +31,37 @@ function addLine(line) {
     document.getElementById("consoletext").appendChild(textNode);
 }
 
-function setScret(s) {
+function setSecret(s) {
     mySecret = s;
+}
+
+
+function sendCommand(pl) {
+    $.ajax({
+        type: "POST",
+        url: "/cmd",
+        data: JSON.stringify(pl),
+        dataType: "html",
+        success: function(data) {
+            $('#textinput').val($('#textinput').val()+"Command - " + pl.Command + " : " + data +  String.fromCharCode(13, 10));
+        },
+        error: function() {
+            alert('Error occured');
+        }
+    });
+}
+
+function startModule() {
+
+    modToStart = $('#modToStart').val();
+
+    var pl = new Object();
+    pl.Name = myName;
+    pl.Hash = "hub";
+    pl.Command = "Start";
+    pl.Type = "Command";
+    pl.Secret = mySecret;
+    pl.Content = modToStart;
+
+    sendCommand(pl);
 }

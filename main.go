@@ -18,10 +18,9 @@ func main() {
 	var m modbase.ModuleImpl
 	modbase.GetModManager().SetMod(&m)
 	m.Name = "mod-manager"
-	m.InstanceName = "module-manager"
-	modbase.HubAddress = "localhost"
-	modbase.ModulePort = "2001"
+	m.InstanceName = "mod-manager"
 
+	m.SetServer("", "", "2001", "")
 	m.Init()
 	m.Register("GET", "/mod-manager", index, "WEB")
 	m.Run()
@@ -55,7 +54,7 @@ func index(ctx *gin.Context) {
 func getModules(m *modbase.ModuleImpl) map[string]Module {
 	var cr com.CommandRequest
 	cr.Generate("List", "hub", m.Name, modbase.GetModManager().GetSecret())
-	srv := com.Server{IP: modbase.HubAddress, Port: modbase.HubPort, Path: "", Protocol: "http"}
+	srv := m.HubServer
 	var mods map[string]Module
 	jsonData, err := com.SendRequest(srv, &cr, true)
 	if err != nil {
