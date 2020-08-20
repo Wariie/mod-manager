@@ -19,7 +19,7 @@
         data: b,
         dataType: "html",
         success: function(data) {
-            $('#textinput').val($('#textinput').val()+"Command - " + command + " : " + data);
+            $('#textinput').val($('#textinput').val()+"Command - " + command + " : " + data + "<br>");
         },
         error: function() {
             alert('Error occured');

@@ -5,9 +5,9 @@ go 1.14
 replace guilhem-mateo.fr/modbase/modules => ../modbase/modules
 
 require (
-	github.com/Wariie/go-woxy/com v0.0.0-20200819222710-6e612a1c0aee
-	github.com/Wariie/go-woxy/modbase v0.0.0-20200819230617-a1b1b6cabdae
-	github.com/Wariie/go-woxy/tools v0.0.0-20200819222710-6e612a1c0aee // indirect
+	github.com/Wariie/go-woxy/com v0.0.0-20200819232011-d1e1e4697730
+	github.com/Wariie/go-woxy/modbase v0.0.0-20200819232011-d1e1e4697730
+	github.com/Wariie/go-woxy/tools v0.0.0-20200819232011-d1e1e4697730 // indirect
 	github.com/gin-contrib/static v0.0.0-20200815103939-31fb0c56a3d1 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	golang.org/x/sys v0.0.0-20200819171115-d785dc25833f // indirect
