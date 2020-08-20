@@ -21,6 +21,7 @@ func main() {
 	m.InstanceName = "mod-manager"
 
 	m.SetServer("", "", "2001", "")
+	m.SetCommand("pouet", pouet)
 	m.Init()
 	m.Register("GET", "/mod-manager", index, "WEB")
 	m.Run()
@@ -63,6 +64,10 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 	json.NewDecoder(bytes.NewBufferString(jsonData)).Decode(&mods)
 
 	return mods
+}
+
+func pouet(r com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
+	return "pouet", nil
 }
 
 /*Module - Module configuration */
