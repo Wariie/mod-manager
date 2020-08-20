@@ -53,7 +53,7 @@ function sendCommand(pl) {
 
 function startModule() {
 
-    modToStart = $('#modToStart').val();
+    modToStart = $('#modToStart option:selected').val();
 
     var pl = new Object();
     pl.Name = myName;
