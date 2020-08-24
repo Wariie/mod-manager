@@ -98,11 +98,11 @@
             <p class="title is-success">{{.STATE}}</p>
             <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
             </br ></br >
-            <button class="button is-light" onclick="command({{.PK}}, 'Performance');">Perf</button>
-            <button class="button is-light" onclick="command({{.PK}}, 'Ping');">Ping</button>
-            <button class="button is-light" onclick="command({{.PK}}, 'Restart');">Restart</button>
-            <button class="button is-light" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
-            <button class="button is-light" onclick="command({{.PK}}, 'Log');">Log</button>
+            <button class="button is-danger is-large" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
+            <button class="button is-primary is-large" onclick="command({{.PK}}, 'Restart');">Restart</button>
+            <button class="button is-light is-small" onclick="command({{.PK}}, 'Performance');">Perf</button>
+            <button class="button is-succes is-small" onclick="command({{.PK}}, 'Ping');">Ping</button>
+            <button class="button is-info is-small" onclick="command({{.PK}}, 'Log');">Log</button>
           </div>
         </div>
       </div>
