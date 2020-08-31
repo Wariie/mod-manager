@@ -46,7 +46,7 @@
      <p class="menu-label">Module</p>
      <ul class="menu-list">
        {{range .mods}}
-          {{if ne .NAME "hub"}}
+          {{if and (ne .NAME "hub") (ne .EXE.BIN "") }}
           <li class="menu-item">
             <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
           </li>
