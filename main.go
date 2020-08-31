@@ -36,7 +36,7 @@ func index(ctx *gin.Context) {
 
 	running := 0
 	for k := range mods {
-		if mods[k].STATE == Online {
+		if mods[k].STATE == Online && mods[k].NAME != "hub" {
 			running++
 		}
 	}

@@ -1,9 +1,11 @@
 
-  var myName = "mod-manager";
+var myName = "mod-manager";
 
-  var mySecret = "";
+var mySecret = "";
 
-  function command(hash, command) {
+var mods;
+
+function command(hash, command) {
     var pl = new Object();
     pl.Hash = hash;
     pl.Name = myName;
@@ -12,29 +14,12 @@
     pl.Secret = mySecret;
 
     sendCommand(pl);
-  }
-
-  function checkInput() {
-    var event = window.event || event.which;
-
-    if (event.keyCode == 13) {
-        event.preventDefault();
-        addLine(document.getElementById("textinput").value);
-        document.getElementById("textinput").value = "";
-    }
-
-    document.getElementById("textinput").style.height = (document.getElementById("textinput").scrollHeight) + "px";
 }
 
-function addLine(line) {
-    var textNode = document.createTextNode(line);
-    document.getElementById("consoletext").appendChild(textNode);
-}
-
-function setSecret(s) {
+function setParams(s, m) {
     mySecret = s;
+    mods = m;
 }
-
 
 function sendCommand(pl) {
     $.ajax({
@@ -43,12 +28,31 @@ function sendCommand(pl) {
         data: JSON.stringify(pl),
         dataType: "html",
         success: function(data) {
-            $('#textinput').val($('#textinput').val()+"Command - " + pl.Command + " : " + data +  String.fromCharCode(13, 10));
+            toggleModal()
+            setModalText(pl.Command, pl.Hash, data);
+            //$('#textinput').val($('#textinput').val()+"Command - " + pl.Command + " : " + data +  String.fromCharCode(13, 10));
         },
         error: function() {
             alert('Error occured');
         }
     });
+}
+
+function setModalText(cmd, mod, txt) {
+    var name = ""
+    for (m in mods) {
+        if(m.Hash == mod) {
+            name == m.Name
+        }
+    }
+
+    $('.modal-card-title').text(cmd + " > " + name);
+    $('.modal-content').html("<p>" + txt.replace(/\n/g, "</p><p>") + "</p>");
+    $('#modalResult').val("Success");
+} 
+
+function toggleModal() {
+    $('.modal').toggleClass("is-active");
 }
 
 function startModule() {
@@ -65,3 +69,4 @@ function startModule() {
 
     sendCommand(pl);
 }
+
