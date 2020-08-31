@@ -46,7 +46,7 @@
      <p class="menu-label">Module</p>
      <ul class="menu-list">
        {{range .mods}}
-          {{if and (ne .NAME "hub") (ne .EXE.BIN "") }}
+          {{if ne .NAME "hub" }}
           <li class="menu-item">
             <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
           </li>
@@ -104,11 +104,13 @@
             <p class="title is-success">{{.STATE}}</p>
             <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
             </br ></br >
-            <button class="button is-danger is-large" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
-            <button class="button is-primary is-large" onclick="command({{.PK}}, 'Restart');">Restart</button>
-            <button class="button is-light is-large" onclick="command({{.PK}}, 'Performance');">Perf</button>
-            <button class="button is-succes is-large" onclick="command({{.PK}}, 'Ping');">Ping</button>
-            <button class="button is-info is-large" onclick="command({{.PK}}, 'Log');">Log</button>
+            {{if ne .EXE.BIN ""}}
+              <button class="button is-danger is-large" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
+              <button class="button is-primary is-large" onclick="command({{.PK}}, 'Restart');">Restart</button>
+              <button class="button is-light is-large" onclick="command({{.PK}}, 'Performance');">Perf</button>
+              <button class="button is-succes is-large" onclick="command({{.PK}}, 'Ping');">Ping</button>
+              <button class="button is-info is-large" onclick="command({{.PK}}, 'Log');">Log</button>
+            {{end}}
           </div>
         </div>
       </div>
