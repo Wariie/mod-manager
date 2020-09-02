@@ -78,21 +78,18 @@
       </div>
     </div>
 
-    <div class="column">
-
-    </div>
-
-
-    <div class="column">
-      <button class="button is-light" onclick="startModule();">Start</button>
-      <div class="select">
-        <select id="modToStart">
-            {{range $m := .mods}} 
-              {{if and (ne .NAME "hub") (ne .EXE.BIN "")}}
-              <option value="{{.NAME}}">{{.NAME}}</option>
+    <div class="columns">
+      <div class="column">
+        <button class="button is-light" onclick="startModule();">Start</button>
+        <div class="select">
+          <select id="modToStart">
+              {{range $m := .mods}} 
+                {{if and (ne .NAME "hub") (ne .EXE.BIN "")}}
+                <option value="{{.NAME}}">{{.NAME}}</option>
+                {{end}}
               {{end}}
-            {{end}}
-        </select>
+          </select>
+        </div>
       </div>
     </div>
     
@@ -141,17 +138,6 @@
   {{template "side_menu" .}}
   {{template "main" .}}
   </section>
-{{end}}
-
-{{define "console"}}
-    <!--<div id = "backgroundC" class="column">
-      <div id = "console">
-          <p id = "consoletext">
-              Console />
-          </p>
-          <textarea rows = "1" id = "textinput" onkeydown = "checkInput();"></textarea>
-      </div>
-    </div>-->
 {{end}}
 
 {{define "script"}}
