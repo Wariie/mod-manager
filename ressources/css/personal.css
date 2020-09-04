@@ -101,4 +101,15 @@
     min-height: 100%;
   }
 
+  .modal-card {
+    width: 80%;
+    background-color: #12131a;
+    color: #bec4e2;
+  }
+
+  .modal-content {
+    width: 100%;
+    font-size: 12px;
+  }
+
 

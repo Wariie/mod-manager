@@ -45,9 +45,12 @@ function setModalText(cmd, mod, txt) {
             name == m.Name
         }
     }
+    var ansi_up = new AnsiUp;
+
+    var html = ansi_up.ansi_to_html(txt);
 
     $('.modal-card-title').text(cmd + " > " + name);
-    $('.modal-content').html("<p>" + txt.replace(/\n/g, "</p><p>") + "</p>");
+    $('.modal-content').html("<p>" + html.replace(/\n/g, "</p><p>") + "</p>");
     $('#modalResult').val("Success");
 } 
 
