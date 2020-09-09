@@ -71,13 +71,16 @@ func pouet(r com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, erro
 
 /*Module - Module configuration */
 type Module struct {
-	NAME    string
-	VERSION int
-	TYPES   string
-	EXE     ModuleExecConfig
-	BINDING ServerConfig
-	STATE   ModuleState
-	PK      string
+	AUTH     ModuleAuthConfig
+	BINDING  ServerConfig
+	COMMANDS []string
+	EXE      ModuleExecConfig
+	NAME     string
+	pid      int
+	PK       string
+	STATE    ModuleState
+	TYPES    string
+	VERSION  int
 }
 
 /*ModuleExecConfig - Module exec file informations */
@@ -100,6 +103,12 @@ type ServerConfig struct {
 type Route struct {
 	FROM string
 	TO   string
+}
+
+/*ModuleAuthConfig - Auth configuration*/
+type ModuleAuthConfig struct {
+	ENABLED bool
+	TYPE    string
 }
 
 //ModuleState - State of ModuleConfig

@@ -5,15 +5,23 @@ var mySecret = "";
 
 var mods;
 
-function command(hash, command) {
+function searchHashMod(name) {
+    for(m in mods) {
+        if(mods[m].NAME == name) {
+            return mods[m].PK
+        }
+    }
+}
+
+function command(name, command) {
     var pl = new Object();
-    pl.Hash = hash;
+    pl.Hash = searchHashMod(name);
     pl.Name = myName;
     pl.Command = command;
     pl.Type = "Command";
     pl.Secret = mySecret;
 
-    sendCommand(pl);
+    sendCommand(pl, name);
 }
 
 function setParams(s, m) {
@@ -21,7 +29,7 @@ function setParams(s, m) {
     mods = m;
 }
 
-function sendCommand(pl) {
+function sendCommand(pl, name) {
     $.ajax({
         type: "POST",
         url: "/cmd",
@@ -29,8 +37,7 @@ function sendCommand(pl) {
         dataType: "html",
         success: function(data) {
             toggleModal()
-            setModalText(pl.Command, pl.Hash, data);
-            //$('#textinput').val($('#textinput').val()+"Command - " + pl.Command + " : " + data +  String.fromCharCode(13, 10));
+            setModalText(pl.Command, name, data);
         },
         error: function() {
             alert('Error occured');
@@ -38,13 +45,7 @@ function sendCommand(pl) {
     });
 }
 
-function setModalText(cmd, mod, txt) {
-    var name = ""
-    for (m in mods) {
-        if(m.Hash == mod) {
-            name == m.Name
-        }
-    }
+function setModalText(cmd, name, txt) {
     var ansi_up = new AnsiUp;
 
     var html = ansi_up.ansi_to_html(txt);
@@ -70,6 +71,18 @@ function startModule() {
     pl.Secret = mySecret;
     pl.Content = modToStart;
 
-    sendCommand(pl);
+    sendCommand(pl, modToStart);
+}
+
+function sendCommands() {
+    c = $('#commands option:selected').val();
+    p = c.split("/")
+    command(p[1], p[0]);
+}
+
+function sendCCommands() {
+    c = $('#customCommands option:selected').val();
+    p = c.split("/")
+    command(p[1], p[0]);
 }
 

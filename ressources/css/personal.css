@@ -102,7 +102,7 @@
   }
 
   .modal-card {
-    width: 80%;
+    width: auto;
     background-color: #12131a;
     color: #bec4e2;
   }
@@ -110,6 +110,28 @@
   .modal-content {
     width: 100%;
     font-size: 12px;
+    padding: 10px;
+  }
+
+  .commandsDiv {
+    padding-top: 2em;
+  }
+
+  .commandGroup {
+    flex: auto;
+    margin-top: 5px;
+  }
+
+  .commandGroup .select select {
+    width: 100%;
+  }
+
+  .commandGroup button.is-normal {
+    width: 10em;
+  }
+
+  .commandGroup .select {
+    width: 15em;
   }
 
 

@@ -101,13 +101,38 @@
             <p class="heading">{{.NAME}}</p>
             <p class="title is-success">{{.STATE}}</p>
             <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
-            </br ></br >
+
             {{if ne .EXE.BIN ""}}
-              <button class="button is-danger is-large" onclick="command({{.PK}}, 'Shutdown');">Shutdown</button>
-              <button class="button is-primary is-large" onclick="command({{.PK}}, 'Restart');">Restart</button>
-              <button class="button is-light is-large" onclick="command({{.PK}}, 'Performance');">Perf</button>
-              <button class="button is-succes is-large" onclick="command({{.PK}}, 'Ping');">Ping</button>
-              <button class="button is-info is-large" onclick="command({{.PK}}, 'Log');">Log</button>
+            <div class="commandsDiv">
+              <div class="commandGroup">
+                <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
+                <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
+              </div>
+              <div class="commandGroup">
+                <button class="button is-link" onclick="sendCommands({{.NAME}});">Start</button>
+                <div class="select">
+                  <select id="commands">
+                    <option value="Log/{{.NAME}}">Log</option>
+                    <option value="Performance/{{.NAME}}">Performance</option>
+                    <option value="Ping/{{.NAME}}">Ping</option>
+                  </select>
+                </div>
+              </div>
+              {{if not .COMMANDS }}
+                
+              {{ else }}
+              <div class="commandGroup">
+                <button class="button is-link" onclick="sendCCommands();">Start</button>
+                <div class="select">
+                  <select id="customCommands">
+                    {{range $c := .COMMANDS}} 
+                      <option value="{{$c}}/{{$m.NAME}}">{{$c}}</option>
+                    {{end}}
+                  </select>
+                </div>
+              </div>
+              {{end}}
+            </div>
             {{end}}
           </div>
         </div>
@@ -121,9 +146,7 @@
           <p class="modal-card-title">Modal title</p>
           <button class="delete" aria-label="close"  onclick="toggleModal();"></button>
         </header>
-        <section class="modal-card-body">
-          <div class="modal-content"></div>
-        </section>
+        <div class="modal-content"></div>
         <footer class="modal-card-foot">
           <button class="button" onclick="toggleModal();">Close</button>
         </footer>
