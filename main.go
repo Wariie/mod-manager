@@ -65,7 +65,7 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 	return mods
 }
 
-func pouet(r com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
+func pouet(r *com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
 	return "pouet", nil
 }
 
