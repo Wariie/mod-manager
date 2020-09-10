@@ -74,15 +74,23 @@ function startModule() {
     sendCommand(pl, modToStart);
 }
 
-function sendCommands() {
-    c = $('#commands option:selected').val();
-    p = c.split("/")
-    command(p[1], p[0]);
+function sendCommands(name) {
+    sp = name.split('.')
+    Rname = sp[0];
+    for (var i = 1; i < sp.length; i++) {
+        Rname += "\\." + sp[i]
+    }
+    c = $('#commands'+Rname+' option:selected').val();
+    command(name, c);
 }
 
-function sendCCommands() {
-    c = $('#customCommands option:selected').val();
-    p = c.split("/")
-    command(p[1], p[0]);
+function sendCCommands(name) {
+    sp = name.split('.')
+    Rname = sp[0];
+    for (var i = 1; i < sp.length; i++) {
+        Rname += "\\." + sp[i]
+    }
+    c = $('#customCommands'+Rname+' option:selected').val();
+    command(name, c);
 }
 

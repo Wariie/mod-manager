@@ -111,10 +111,10 @@
               <div class="commandGroup">
                 <button class="button is-link" onclick="sendCommands({{.NAME}});">Start</button>
                 <div class="select">
-                  <select id="commands">
-                    <option value="Log/{{.NAME}}">Log</option>
-                    <option value="Performance/{{.NAME}}">Performance</option>
-                    <option value="Ping/{{.NAME}}">Ping</option>
+                  <select id="commands{{.NAME}}">
+                    <option value="Log">Log</option>
+                    <option value="Performance">Performance</option>
+                    <option value="Ping">Ping</option>
                   </select>
                 </div>
               </div>
@@ -122,11 +122,11 @@
                 
               {{ else }}
               <div class="commandGroup">
-                <button class="button is-link" onclick="sendCCommands();">Start</button>
+                <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
                 <div class="select">
-                  <select id="customCommands">
+                  <select id="customCommands{{.NAME}}">
                     {{range $c := .COMMANDS}} 
-                      <option value="{{$c}}/{{$m.NAME}}">{{$c}}</option>
+                      <option value="{{$c}}">{{$c}}</option>
                     {{end}}
                   </select>
                 </div>
