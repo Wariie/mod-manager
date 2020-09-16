@@ -16,7 +16,6 @@ var mod *modbase.ModuleImpl
 
 func main() {
 	var m modbase.ModuleImpl
-	modbase.GetModManager().SetMod(&m)
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
@@ -37,7 +36,7 @@ func index(ctx *gin.Context) {
 
 	running := 0
 	for k := range mods {
-		if mods[k].STATE == Online {
+		if mods[k].STATE == Online && mods[k].NAME != "hub" {
 			running++
 		}
 	}
@@ -45,7 +44,7 @@ func index(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index", gin.H{
 		"title":              me.Name,
 		"path":               "/" + me.Name,
-		"mod_number":         len(mods),
+		"mod_number":         len(mods) - 1,
 		"mod_number_running": running,
 		"mods":               mods,
 		"secret":             modbase.GetModManager().GetSecret(),
@@ -113,6 +112,12 @@ type ModuleAuthConfig struct {
 type Route struct {
 	FROM string
 	TO   string
+}
+
+/*ModuleAuthConfig - Auth configuration*/
+type ModuleAuthConfig struct {
+	ENABLED bool
+	TYPE    string
 }
 
 //ModuleState - State of ModuleConfig

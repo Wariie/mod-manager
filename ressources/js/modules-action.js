@@ -1,54 +1,62 @@
 
-  var myName = "mod-manager";
+var myName = "mod-manager";
 
-  var mySecret = "";
+var mySecret = "";
 
-  function command(hash, command) {
+var mods;
+
+function searchHashMod(name) {
+    for(m in mods) {
+        if(mods[m].NAME == name) {
+            return mods[m].PK
+        }
+    }
+}
+
+function command(name, command) {
     var pl = new Object();
-    pl.Hash = hash;
+    pl.Hash = searchHashMod(name);
     pl.Name = myName;
     pl.Command = command;
     pl.Type = "Command";
     pl.Secret = mySecret;
 
-    sendCommand(pl);
-  }
-
-  function checkInput() {
-    var event = window.event || event.which;
-
-    if (event.keyCode == 13) {
-        event.preventDefault();
-        addLine(document.getElementById("textinput").value);
-        document.getElementById("textinput").value = "";
-    }
-
-    document.getElementById("textinput").style.height = (document.getElementById("textinput").scrollHeight) + "px";
+    sendCommand(pl, name);
 }
 
-function addLine(line) {
-    var textNode = document.createTextNode(line);
-    document.getElementById("consoletext").appendChild(textNode);
-}
-
-function setSecret(s) {
+function setParams(s, m) {
     mySecret = s;
+    mods = m;
 }
 
-
-function sendCommand(pl) {
+function sendCommand(pl, name) {
     $.ajax({
         type: "POST",
         url: "/cmd",
         data: JSON.stringify(pl),
         dataType: "html",
         success: function(data) {
-            $('#textinput').val($('#textinput').val()+"Command - " + pl.Command + " : " + data +  String.fromCharCode(13, 10));
+            toggleModal()
+            setModalText(pl.Command, name, data);
         },
         error: function() {
             alert('Error occured');
         }
     });
+}
+
+function setModalText(cmd, name, txt) {
+    var ansi_up = new AnsiUp;
+
+    var html = ansi_up.ansi_to_html(txt);
+
+    $('.modal-card-title').text(cmd + " > " + name);
+    $('.modal-content').html("<p>" + html.replace(/\n/g, "</p><p>") + "</p>");
+    $('#modalResult').val("Success");
+} 
+
+function toggleModal() {
+    $('.modal').toggleClass("is-active");
 }
 
 function startModule() {
@@ -63,5 +71,26 @@ function startModule() {
     pl.Secret = mySecret;
     pl.Content = modToStart;
 
-    sendCommand(pl);
+    sendCommand(pl, modToStart);
 }
+
+function sendCommands(name) {
+    sp = name.split('.')
+    Rname = sp[0];
+    for (var i = 1; i < sp.length; i++) {
+        Rname += "\\." + sp[i]
+    }
+    c = $('#commands'+Rname+' option:selected').val();
+    command(name, c);
+}
+
+function sendCCommands(name) {
+    sp = name.split('.')
+    Rname = sp[0];
+    for (var i = 1; i < sp.length; i++) {
+        Rname += "\\." + sp[i]
+    }
+    c = $('#customCommands'+Rname+' option:selected').val();
+    command(name, c);
+}
+

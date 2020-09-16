@@ -1,6 +1,6 @@
 module github.com/Wariie/mod-manager
 
-go 1.14
+go 1.15
 
 replace guilhem-mateo.fr/modbase/modules => ../modbase/modules
 
