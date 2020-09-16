@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	com "github.com/Wariie/go-woxy/com"
-	modbase "github.com/Wariie/go-woxy/modbase"
+	"github.com/Wariie/go-woxy/com"
+	"github.com/Wariie/go-woxy/modbase"
 )
 
 var mod *modbase.ModuleImpl
@@ -20,6 +20,7 @@ func main() {
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
+	//m.SetHubServer("127.0.0.1", "", "2000", "https")
 	m.SetServer("", "", "2001", "")
 	m.SetCommand("pouet", pouet)
 	m.Init()
@@ -66,35 +67,46 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 	return mods
 }
 
-func pouet(r com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
+func pouet(r *com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
 	return "pouet", nil
 }
 
 /*Module - Module configuration */
 type Module struct {
-	NAME    string
-	VERSION int
-	TYPES   string
-	EXE     ModuleExecConfig
-	BINDING ServerConfig
-	STATE   ModuleState
-	PK      string
+	AUTH     ModuleAuthConfig
+	BINDING  ServerConfig
+	COMMANDS []string
+	EXE      ModuleExecConfig
+	NAME     string
+	pid      int
+	PK       string
+	STATE    ModuleState
+	TYPES    string
+	VERSION  int
 }
 
 /*ModuleExecConfig - Module exec file informations */
 type ModuleExecConfig struct {
-	SRC  string
-	MAIN string
-	BIN  string
+	BIN        string
+	MAIN       string
+	SRC        string
+	SUPERVISED bool
+	REMOTE     bool
 }
 
 /*ServerConfig - Server configuration*/
 type ServerConfig struct {
 	ADDRESS  string
-	PORT     string
 	PATH     []Route
+	PORT     string
 	PROTOCOL string
 	ROOT     string
+}
+
+/*ModuleAuthConfig - Auth configuration*/
+type ModuleAuthConfig struct {
+	ENABLED bool
+	TYPE    string
 }
 
 // Route - Route redirection
@@ -113,4 +125,5 @@ const (
 	Stopped    ModuleState = "STOPPED"
 	Downloaded ModuleState = "DOWNLOADED"
 	Error      ModuleState = "ERROR"
+	Failed     ModuleState = "FAILED"
 )
