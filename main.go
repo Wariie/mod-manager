@@ -114,12 +114,6 @@ type Route struct {
 	TO   string
 }
 
-/*ModuleAuthConfig - Auth configuration*/
-type ModuleAuthConfig struct {
-	ENABLED bool
-	TYPE    string
-}
-
 //ModuleState - State of ModuleConfig
 type ModuleState string
 
