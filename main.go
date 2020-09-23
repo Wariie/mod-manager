@@ -19,9 +19,8 @@ func main() {
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
-	//m.SetHubServer("127.0.0.1", "", "2000", "https")
-	m.SetHubAddress("127.0.0.1")
-	m.SetHubPort("2000")
+	//m.SetHubAddress("127.0.0.1")
+	//m.SetHubPort("2000")
 	//m.SetProtocol("https")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
