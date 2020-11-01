@@ -102,8 +102,8 @@
             <p class="title is-success">{{.STATE}}</p>
             <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
 
-            {{if ne .EXE.BIN ""}}
             <div class="commandsDiv">
+              {{if ne .EXE.BIN ""}}
               <div class="commandGroup">
                 <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
                 <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
@@ -118,6 +118,8 @@
                   </select>
                 </div>
               </div>
+              {{end}}
+
               {{if not .COMMANDS }}
                 
               {{ else }}
@@ -133,7 +135,6 @@
               </div>
               {{end}}
             </div>
-            {{end}}
           </div>
         </div>
       </div>
