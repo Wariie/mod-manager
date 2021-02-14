@@ -21,7 +21,7 @@ func main() {
 
 	//m.SetHubAddress("127.0.0.1")
 	//m.SetHubPort("2000")
-	//m.SetProtocol("https")
+	m.SetHubProtocol("https")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
 	m.Init()
@@ -74,16 +74,17 @@ func pouet(r *com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, err
 
 /*Module - Module configuration */
 type Module struct {
-	AUTH     ModuleAuthConfig
-	BINDING  ServerConfig
-	COMMANDS []string
-	EXE      ModuleExecConfig
-	NAME     string
-	pid      int
-	PK       string
-	STATE    ModuleState
-	TYPES    string
-	VERSION  int
+	AUTH         ModuleAuthConfig
+	BINDING      ServerConfig
+	COMMANDS     []string
+	EXE          ModuleExecConfig
+	NAME         string
+	pid          int
+	PK           string
+	RESOURCEPATH string
+	STATE        ModuleState
+	TYPES        string
+	VERSION      int
 }
 
 /*ModuleExecConfig - Module exec file informations */
