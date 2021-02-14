@@ -21,6 +21,7 @@ func main() {
 
 	//m.SetHubAddress("127.0.0.1")
 	//m.SetHubPort("2000")
+	m.SetHubAddress("guilhem-mateo.fr")
 	m.SetHubProtocol("https")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
