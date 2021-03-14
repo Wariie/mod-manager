@@ -47,12 +47,12 @@ func index(w http.ResponseWriter, r *http.Request) {
 	log.Println("GET / mod.v0", r.RemoteAddr)
 
 	data := IndexPage{
-		title:              me.Name,
-		path:               "/" + me.Name,
-		mod_number:         len(mods) - 1,
-		mod_number_running: running,
-		mods:               mods,
-		secret:             modbase.GetModManager().GetSecret(),
+		Title:            me.Name,
+		Path:             "/" + me.Name,
+		ModNumber:        len(mods) - 1,
+		ModNumberRunning: running,
+		Mods:             mods,
+		Secret:           modbase.GetModManager().GetSecret(),
 	}
 
 	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
@@ -63,12 +63,12 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 type IndexPage struct {
-	title              string
-	path               string
-	mod_number         int
-	mod_number_running int
-	mods               map[string]Module
-	secret             string
+	Title            string
+	Path             string
+	ModNumber        int
+	ModNumberRunning int
+	Mods             map[string]Module
+	Secret           string
 }
 
 func getModules(m *modbase.ModuleImpl) map[string]Module {
