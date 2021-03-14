@@ -11,35 +11,33 @@ import (
 	"github.com/Wariie/go-woxy/modbase"
 )
 
-var mod *modbase.ModuleImpl
+var mods *map[string]Module
 
 func main() {
 	var m modbase.ModuleImpl
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
-	//m.SetHubAddress("127.0.0.1")
-	//m.SetHubPort("2000")
-	m.SetHubAddress("guilhem-mateo.fr")
-	m.SetHubProtocol("https")
+	m.SetHubAddress("127.0.0.1")
+	m.SetHubPort("2000")
+	//m.SetHubAddress("guilhem-mateo.fr")
+	m.SetHubProtocol("http")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
-	m.Mode = "Test"
 	m.Init()
-	m.Register("GET", "/mod-manager", index, "WEB")
+	m.Register("/mod-manager/api", api, "")
+	m.Register("/mod-manager", index, "WEB")
 	m.Run()
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
+	modList := refreshModuleList()
 
-	var mods map[string]Module
 	me := modbase.GetModManager().GetMod()
-	mods = getModules(me)
-	log.Println(mods)
 
 	running := 0
-	for k := range mods {
-		if mods[k].STATE == Online && mods[k].NAME != "hub" {
+	for k := range modList {
+		if modList[k].STATE == Online && modList[k].NAME != "hub" {
 			running++
 		}
 	}
@@ -49,9 +47,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 	data := IndexPage{
 		Title:            me.Name,
 		Path:             "/" + me.Name,
-		ModNumber:        len(mods) - 1,
+		ModNumber:        len(modList) - 1,
 		ModNumberRunning: running,
-		Mods:             mods,
+		Mods:             modList,
 		Secret:           modbase.GetModManager().GetSecret(),
 	}
 
@@ -60,6 +58,72 @@ func index(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalln("Error : ", err)
 	}
+}
+
+func api(w http.ResponseWriter, r *http.Request) {
+	t, b := com.GetCustomRequestType(r)
+	response := ""
+
+	//CHECK SESSION TOKEN
+
+	// CHECK ERROR DURING READING DATA
+	if t["error"] == "error" {
+		response = "Error reading Request"
+	} else if t["Hash"] != "" {
+		var mod Module
+		modList := *mods
+
+		if t["Type"] == "Command" {
+
+			for m := range modList {
+				if modList[m].NAME == t["Hash"] {
+					mod = modList[m]
+				}
+			}
+
+			var cr com.CommandRequest
+			cr.Decode(b)
+
+			//CHECK FOR ShutdownOrStart
+			if cr.Command == "ShutdownOrStart" {
+				log.Println(mod.STATE)
+				if mod.STATE != "UNKNOWN" && mod.STATE != "FAILED" && mod.STATE != "STOPPED" && mod.STATE != "ERROR" {
+					cr.Command = "Shutdown"
+				} else {
+					cr.Command = "Start"
+				}
+			}
+
+			//Process command
+			if cr.Command == "Status" {
+				response += string(mod.STATE)
+			} else {
+				body, err := sendCommand(mod, cr.Command, cr.Content)
+
+				if err != nil {
+					response += err.Error()
+				}
+				response += body
+			}
+			log.Println(cr.Command + " TO " + mod.NAME)
+
+		}
+	}
+	w.Write([]byte(response))
+}
+
+func refreshModuleList() map[string]Module {
+	listM := getModules(modbase.GetModManager().GetMod())
+	mods = &listM
+	return listM
+}
+
+func sendCommand(mod Module, command string, content string) (string, error) {
+	var cr com.CommandRequest
+	cr.Generate(command, mod.PK, mod.NAME, modbase.GetModManager().GetSecret())
+	var c interface{} = &cr
+	p := (c).(com.Request)
+	return com.SendRequest(modbase.GetModManager().GetMod().HubServer, p, false)
 }
 
 type IndexPage struct {

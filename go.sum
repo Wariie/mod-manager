@@ -10,6 +10,18 @@ github.com/Wariie/go-woxy/modbase v0.0.0-20210314001400-c179818d288f h1:SiRw4fXG
 github.com/Wariie/go-woxy/modbase v0.0.0-20210314001400-c179818d288f/go.mod h1:ClJQorzua3T5RODqH3bgq3CttqMb+gK/qPxnB0+iK74=
 github.com/Wariie/go-woxy/modbase v0.0.0-20210314012316-9ae444a855a0 h1:9uwN3aJXvYLbbJ8/cblbSloBmFOfZ/f5Fvp8Kah+l6Y=
 github.com/Wariie/go-woxy/modbase v0.0.0-20210314012316-9ae444a855a0/go.mod h1:ClJQorzua3T5RODqH3bgq3CttqMb+gK/qPxnB0+iK74=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314151817-631f9674e6fb h1:8E8FnCyTMGfJVU/JT6VQzjQnVoZ/Ok/zkHFal4xcfH8=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314151817-631f9674e6fb/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314194529-b4f4bdba9231 h1:BdoB8RYvvRDVSqp07ZYqSe87+PJ3lraXivP/beL6Hgc=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314194529-b4f4bdba9231/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314194823-4e802017e8ad h1:e1KRRp/1pTH0TNhPpnyYlxVEquExu/M7HlRD+GsufZY=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314194823-4e802017e8ad/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314200252-d84a7f981548 h1:0l+oI9EZ4n72uqZNovIeylLi2A67T0si5XQePq0fXw8=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314200252-d84a7f981548/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314220236-ddc103b5b347 h1:OxpDLxQcdQCYCTl0IK7LO/C486A3ka0O6+QZlh6eDv0=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314220236-ddc103b5b347/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314220536-c4d16e6b59a2 h1:yZ+0j+Ibwiw9fm/yyL6RTevJRgcsr4ad/fth4/m0xgE=
+github.com/Wariie/go-woxy/modbase v0.0.0-20210314220536-c4d16e6b59a2/go.mod h1:t5yUPEHGBk2YfFjf5FCu8ixNptiyijFXfnZlDjoF0NE=
 github.com/Wariie/go-woxy/tools v0.0.0-20200831140926-4e2b8c3ff239/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
 github.com/Wariie/go-woxy/tools v0.0.0-20201110180907-67d31396b35a h1:3EMRCK+IUXj9tW8T7PopdR6zWS/8/8S53zAvvQLDEBw=
 github.com/Wariie/go-woxy/tools v0.0.0-20201110180907-67d31396b35a/go.mod h1:7rH9sj5tIXT1+DbhuurPY0sgPMuk+VEDGtc+JONAU9Y=
@@ -28,6 +40,7 @@ github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZm
 github.com/elazarl/go-bindata-assetfs v1.0.0/go.mod h1:v+YaWX3bdea5J/mo8dSETolEo7R71Vk1u8bnjau5yw4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
+github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/foolin/goview v0.3.0/go.mod h1:OC1VHC4FfpWymhShj8L1Tc3qipFmrmm+luAEdTvkos4=
 github.com/gin-contrib/logger v0.0.2/go.mod h1:Eca5g93bobBwWSNeuLdTqRvNK6btb3XSHdU9ePZ+toM=
 github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
@@ -63,6 +76,7 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.4/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
+github.com/gorilla/handlers v1.5.1/go.mod h1:t8XrUpc4KVXb7HGyJ4/cEnwQiaxrX/hz1Zv/4g96P1Q=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/jessevdk/go-flags v1.4.0/go.mod h1:4FA24M0QyGHXBuZZK/XkWh8h0e1EYbRYJSGM75WSRxI=
