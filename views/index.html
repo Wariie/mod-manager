@@ -1,19 +1,19 @@
 <!-- Headers -->
 {{define "head"}}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="{{.path}}/resources/css/bulma.min.css" type="text/css" />
-    <link rel="stylesheet" href="{{.path}}/resources/css/personal.css" type="text/css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="{{.path}}/resources/css/bulma.min.css" type="text/css" />
+  <link rel="stylesheet" href="{{.path}}/resources/css/personal.css" type="text/css" />
 {{end}}
 
 <!-- Navigation bar -->
 {{define "nav"}}
-<header class="hero">
-  <div class="hero-head">
-    <nav class="navbar has-shadow is-dark" role="navigation">
+  <header class="hero">
+    <div class="hero-head">
+      <nav class="navbar has-shadow is-dark" role="navigation">
         <div class="navbar-brand">
           <a class="navbar-item router-link-active" href="#/"></a>
         </div>
@@ -82,65 +82,18 @@
         <button class="button is-light" onclick="startModule();">Start</button>
         <div class="select">
           <select id="modToStart">
-              {{range $m := .mods}} 
-                {{if and (ne .NAME "hub") (ne .EXE.BIN "")}}
-                <option value="{{.NAME}}">{{.NAME}}</option>
-                {{end}}
+            {{range $m := .mods}} 
+              {{if and (ne .NAME "hub") (ne .EXE.BIN "")}}
+              <option value="{{.NAME}}">{{.NAME}}</option>
               {{end}}
+            {{end}}
           </select>
         </div>
       </div>
     </div>
+
+    {{template "modules_v2" .}}
     
-    <div class="columns">
-    {{range $m := .mods}} 
-      {{if ne .NAME "hub"}}
-      <div class="column">
-        <div class="box notification is-dark">
-          <div>
-            <p class="heading">{{.NAME}}</p>
-            <p class="title is-success">{{.STATE}}</p>
-            <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
-
-            <div class="commandsDiv">
-              {{if ne .EXE.BIN ""}}
-              <div class="commandGroup">
-                <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
-                <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
-              </div>
-              <div class="commandGroup">
-                <button class="button is-link" onclick="sendCommands({{.NAME}});">Start</button>
-                <div class="select">
-                  <select id="commands{{.NAME}}">
-                    <option value="Log">Log</option>
-                    <option value="Performance">Performance</option>
-                    <option value="Ping">Ping</option>
-                  </select>
-                </div>
-              </div>
-              {{end}}
-
-              {{if not .COMMANDS }}
-                
-              {{ else }}
-              <div class="commandGroup">
-                <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
-                <div class="select">
-                  <select id="customCommands{{.NAME}}">
-                    {{range $c := .COMMANDS}} 
-                      <option value="{{$c}}">{{$c}}</option>
-                    {{end}}
-                  </select>
-                </div>
-              </div>
-              {{end}}
-            </div>
-          </div>
-        </div>
-      </div>
-      {{end}}
-    {{end}}
-    </div>
     <div class="modal">
       <div class="modal-card">
         <header class="modal-card-head">
@@ -154,6 +107,99 @@
       </div>
     </div>
   </main>
+{{end}}
+
+{{define modules}}
+  <div class="columns">
+    {{range $m := .mods}} 
+      {{if ne .NAME "hub"}}
+        <div class="column">
+          <div class="box notification is-dark">
+            <div>
+              <p class="heading">{{.NAME}}</p>
+              <p class="title is-success">{{.STATE}}</p>
+              <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
+
+              <div class="commandsDiv">
+                {{if ne .EXE.BIN ""}}
+                  <div class="commandGroup">
+                    <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
+                    <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
+                  </div>
+                  <div class="commandGroup">
+                    <button class="button is-link" onclick="sendCommands({{.NAME}});">Start</button>
+                    <div class="select">
+                      <select id="commands{{.NAME}}">
+                        <option value="Log">Log</option>
+                        <option value="Performance">Performance</option>
+                        <option value="Ping">Ping</option>
+                      </select>
+                    </div>
+                  </div>
+                {{end}}
+
+                {{if not .COMMANDS }}
+                  
+                {{ else }}
+                  <div class="commandGroup">
+                    <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
+                    <div class="select">
+                      <select id="customCommands{{.NAME}}">
+                        {{range $c := .COMMANDS}} 
+                          <option value="{{$c}}">{{$c}}</option>
+                        {{end}}
+                      </select>
+                    </div>
+                  </div>
+                {{end}}
+              </div>
+            </div>
+          </div>
+        </div>
+      {{end}}
+    {{end}}
+  </div>
+{{end}}
+
+{{define modules_v2}}
+  <div class="columns">
+    {{range $m := .mods}}
+      {{if ne .NAME "hub"}}
+        <div class="column">
+          <p class="heading">{{.NAME}}</p>
+          <p class="title is-success">{{.STATE}}</p>
+        </div>
+
+        {{if ne .EXE.BIN ""}}
+          <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
+          <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
+
+          
+          <div class="select">
+            <select id="commands{{.NAME}}">
+              <option value="Log">Log</option>
+              <option value="Performance">Performance</option>
+              <option value="Ping">Ping</option>
+            </select>
+          </div>
+          <button class="button is-link" onclick="sendCommands({{.NAME}});">></button>
+        {{end}}
+
+        {{if .COMMANDS }}
+          <div class="commandGroup">
+            <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
+            <div class="select">
+              <select id="customCommands{{.NAME}}">
+                {{range $c := .COMMANDS}} 
+                  <option value="{{$c}}">{{$c}}</option>
+                {{end}}
+              </select>
+            </div>
+          </div>
+        {{end}}
+      {{end}} 
+    {{end}}  
+  </div>
 {{end}}
 
 {{define "content"}}

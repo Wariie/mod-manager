@@ -3,10 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/Wariie/go-woxy/com"
 	"github.com/Wariie/go-woxy/modbase"
@@ -25,12 +24,13 @@ func main() {
 	m.SetHubProtocol("https")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
+	m.Mode = "Test"
 	m.Init()
 	m.Register("GET", "/mod-manager", index, "WEB")
 	m.Run()
 }
 
-func index(ctx *gin.Context) {
+func index(w http.ResponseWriter, r *http.Request) {
 
 	var mods map[string]Module
 	me := modbase.GetModManager().GetMod()
@@ -44,15 +44,28 @@ func index(ctx *gin.Context) {
 		}
 	}
 
-	ctx.HTML(http.StatusOK, "index", gin.H{
-		"title":              me.Name,
-		"path":               "/" + me.Name,
-		"mod_number":         len(mods) - 1,
-		"mod_number_running": running,
-		"mods":               mods,
-		"secret":             modbase.GetModManager().GetSecret(),
-	})
-	log.Println("GET / mod.v0", ctx.Request.RemoteAddr)
+	log.Println("GET / mod.v0", r.RemoteAddr)
+
+	data := IndexPage{
+		title:              me.Name,
+		path:               "/" + me.Name,
+		mod_number:         len(mods) - 1,
+		mod_number_running: running,
+		mods:               mods,
+		secret:             modbase.GetModManager().GetSecret(),
+	}
+
+	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html"))
+	tmpl.Execute(w, data)
+}
+
+type IndexPage struct {
+	title              string
+	path               string
+	mod_number         int
+	mod_number_running int
+	mods               map[string]Module
+	secret             string
 }
 
 func getModules(m *modbase.ModuleImpl) map[string]Module {
@@ -69,7 +82,7 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 	return mods
 }
 
-func pouet(r *com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
+func pouet(r *com.Request, w http.ResponseWriter, re *http.Request, mod *modbase.ModuleImpl) (string, error) {
 	return "pouet", nil
 }
 
