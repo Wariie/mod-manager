@@ -109,7 +109,7 @@
   </main>
 {{end}}
 
-{{define modules}}
+{{define "modules"}}
   <div class="columns">
     {{range $m := .mods}} 
       {{if ne .NAME "hub"}}
@@ -161,7 +161,7 @@
   </div>
 {{end}}
 
-{{define modules_v2}}
+{{define "modules_v2"}}
   <div class="columns">
     {{range $m := .mods}}
       {{if ne .NAME "hub"}}
