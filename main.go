@@ -56,7 +56,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
-	err := tmpl.ExecuteTemplate(w, "master", data)
+	err := tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		log.Fatalln("Error : ", err)
 	}
