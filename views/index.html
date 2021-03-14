@@ -162,44 +162,44 @@
 {{end}}
 
 {{define "modules_v2"}}
-  <div class="columns">
-    {{range $m := .Mods}}
-      {{if ne .NAME "hub"}}
-        <div class="column">
-          <p class="heading">{{.NAME}}</p>
-          <p class="title is-success">{{.STATE}}</p>
+  {{range $m := .Mods}}
+    {{if ne .NAME "hub"}}
+    <div class="columns">
+      <div class="column">
+        <p class="heading">{{.NAME}}</p>
+        <p class="title is-success">{{.STATE}}</p>
+      </div>
+
+      {{if ne .EXE.BIN ""}}
+        <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
+        <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
+
+        
+        <div class="select">
+          <select id="commands{{.NAME}}">
+            <option value="Log">Log</option>
+            <option value="Performance">Performance</option>
+            <option value="Ping">Ping</option>
+          </select>
         </div>
+        <button class="button is-link" onclick="sendCommands({{.NAME}});">></button>
+      {{end}}
 
-        {{if ne .EXE.BIN ""}}
-          <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
-          <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
-
-          
+      {{if .COMMANDS }}
+        <div class="commandGroup">
+          <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
           <div class="select">
-            <select id="commands{{.NAME}}">
-              <option value="Log">Log</option>
-              <option value="Performance">Performance</option>
-              <option value="Ping">Ping</option>
+            <select id="customCommands{{.NAME}}">
+              {{range $c := .COMMANDS}} 
+                <option value="{{$c}}">{{$c}}</option>
+              {{end}}
             </select>
           </div>
-          <button class="button is-link" onclick="sendCommands({{.NAME}});">></button>
-        {{end}}
-
-        {{if .COMMANDS }}
-          <div class="commandGroup">
-            <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
-            <div class="select">
-              <select id="customCommands{{.NAME}}">
-                {{range $c := .COMMANDS}} 
-                  <option value="{{$c}}">{{$c}}</option>
-                {{end}}
-              </select>
-            </div>
-          </div>
-        {{end}}
-      {{end}} 
-    {{end}}  
-  </div>
+        </div>
+      {{end}}
+    </div>
+    {{end}} 
+  {{end}}  
 {{end}}
 
 {{define "content"}}
