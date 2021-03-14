@@ -55,8 +55,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 		secret:             modbase.GetModManager().GetSecret(),
 	}
 
-	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html"))
-	tmpl.Execute(w, data)
+	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
+	tmpl.ExecuteTemplate(w, "master", data)
 }
 
 type IndexPage struct {
