@@ -1,25 +1,28 @@
 <!-- Headers -->
 {{define "head"}}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="{{.path}}/resources/css/bulma.min.css" type="text/css" />
-    <link rel="stylesheet" href="{{.path}}/resources/css/personal.css" type="text/css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="{{.Path}}/resources/css/bulma.min.css" type="text/css" />
+  <link rel="stylesheet" href="{{.Path}}/resources/css/personal.css" type="text/css" />
 {{end}}
 
 <!-- Navigation bar -->
 {{define "nav"}}
-<header class="hero">
-  <div class="hero-head">
-    <nav class="navbar has-shadow is-dark" role="navigation">
+  <header class="hero">
+    <div class="hero-head">
+      <nav class="navbar has-shadow is-dark" role="navigation">
         <div class="navbar-brand">
           <a class="navbar-item router-link-active" href="#/"></a>
         </div>
     
         <div id="navbarExampleTransparentExample" class="navbar-menu">
           <div class="navbar-start">
+            <a class="navbar-item" href="#/">
+              <span>GO-WOXY</span>
+            </a>
             <a class="navbar-item" href="#/">
               <span class="icon">
                 <i class="fas fa-info"></i>
@@ -44,7 +47,7 @@
     <nav class="is-primary menu">
      <p class="menu-label">Module</p>
      <ul class="menu-list">
-       {{range .mods}}
+       {{range .Mods}}
           {{if ne .NAME "hub" }}
           <li class="menu-item">
             <a class="is-active" href="#{{.NAME}}">{{.NAME}}</a>
@@ -58,89 +61,24 @@
 
 {{define "main"}}
   <main class="column main is-ancestor">
-    <div class="columns is-multiline">
-      <div class="column">
-        <div class="box notification">
-          <div>
-            <p class="heading">Modules Started</p>
-            <p class="title">{{.mod_number}}</p>
-           </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="box notification">
-          <div>
-            <p class="heading">Modules Running</p>
-            <p class="title">{{.mod_number_running}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="columns">
-      <div class="column">
-        <button class="button is-light" onclick="startModule();">Start</button>
-        <div class="select">
-          <select id="modToStart">
-              {{range $m := .mods}} 
-                {{if and (ne .NAME "hub") (ne .EXE.BIN "")}}
-                <option value="{{.NAME}}">{{.NAME}}</option>
-                {{end}}
-              {{end}}
-          </select>
+    <nav class="level box">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Modules Started</p>
+            <p class="title">{{.ModNumber}}</p>
         </div>
       </div>
-    </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Modules Running</p>
+            <p class="title">{{.ModNumberRunning}}</p>
+        </div>
+      </div>
+    </nav>
+
+    {{template "modules_v2" .}}
     
-    <div class="columns">
-    {{range $m := .mods}} 
-      {{if ne .NAME "hub"}}
-      <div class="column">
-        <div class="box notification is-dark">
-          <div>
-            <p class="heading">{{.NAME}}</p>
-            <p class="title is-success">{{.STATE}}</p>
-            <a href="{{(index $m.BINDING.PATH 0).FROM}}">Go To {{(index $m.BINDING.PATH 0).FROM}}</a>
-
-            <div class="commandsDiv">
-              {{if ne .EXE.BIN ""}}
-              <div class="commandGroup">
-                <button class="button is-danger is-normal" onclick="command({{.NAME}}, 'Shutdown');">Shutdown</button>
-                <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
-              </div>
-              <div class="commandGroup">
-                <button class="button is-link" onclick="sendCommands({{.NAME}});">Start</button>
-                <div class="select">
-                  <select id="commands{{.NAME}}">
-                    <option value="Log">Log</option>
-                    <option value="Performance">Performance</option>
-                    <option value="Ping">Ping</option>
-                  </select>
-                </div>
-              </div>
-              {{end}}
-
-              {{if not .COMMANDS }}
-                
-              {{ else }}
-              <div class="commandGroup">
-                <button class="button is-link" onclick="sendCCommands({{.NAME}});">Start</button>
-                <div class="select">
-                  <select id="customCommands{{.NAME}}">
-                    {{range $c := .COMMANDS}} 
-                      <option value="{{$c}}">{{$c}}</option>
-                    {{end}}
-                  </select>
-                </div>
-              </div>
-              {{end}}
-            </div>
-          </div>
-        </div>
-      </div>
-      {{end}}
-    {{end}}
-    </div>
     <div class="modal">
       <div class="modal-card">
         <header class="modal-card-head">
@@ -156,6 +94,69 @@
   </main>
 {{end}}
 
+{{define "modules_v2"}}
+  {{range $m := .Mods}}
+    {{if ne .NAME "hub"}}
+      <div class="module is-shadow is-vcentered ">
+        <div class="columns">
+          <div class="column is-2">
+            <p class="title">{{.NAME}}</p>
+          </div>
+    
+          <div class="column is-1">
+            <p class="title is-success is-size-4">{{.STATE}}</p>
+          </div>
+
+          <div class="column is-2">
+            <a href="{{(index $m.BINDING.PATH 0).FROM}}">{{(index $m.BINDING.PATH 0).FROM}}</a>
+          </div>
+
+          {{if ne .EXE.BIN ""}}
+            <div class="column is-1">
+            {{if eq .STATE "ONLINE"}}
+                <button id="{{.NAME}}_shutdownorstart"class="button is-danger is-normal" onclick="command({{.NAME}}, 'ShutdownOrStart');">Shutdown</button>
+            {{else}}
+                <button id="{{.NAME}}_shutdownorstart"class="button is-success is-normal" onclick="command({{.NAME}}, 'ShutdownOrStart');">Start</button>
+            {{end}}
+            </div>
+          <div class="column is-1">
+            <button class="button is-info is-normal" onclick="command({{.NAME}}, 'Restart');">Restart</button>
+          </div>
+
+          <div class="column is-2 ">
+            <div class="select">
+              <select id="commands{{.NAME}}">
+                <option value="Log">Log</option>
+                <option value="Performance">Performance</option>
+                <option value="Ping">Ping</option>
+              </select>
+            </div>
+            <button class="button is-link" onclick="sendCommands({{.NAME}});">></button>
+          </div>
+          {{end}}
+
+          {{if .COMMANDS }}
+          <div class="column is-2">
+            <div class="select">
+              <select id="customCommands{{.NAME}}">
+                {{range $c := .COMMANDS}} 
+                  <option value="{{$c}}">{{$c}}</option>
+                {{end}}
+              </select>
+            </div>
+            <button class="button is-link" onclick="sendCCommands({{.NAME}});">></button>
+          </div>
+          {{end}}
+
+          <div class="column is-1">
+            <button class="button"> ...</button>
+          </div>
+        </div>
+      </div>
+    {{end}} 
+  {{end}} 
+{{end}}
+
 {{define "content"}}
   <section class="main-content columns is-fullheight">
   {{template "side_menu" .}}
@@ -164,8 +165,8 @@
 {{end}}
 
 {{define "script"}}
-  <script src="{{.path}}/resources/js/jquery.js" type="text/javascript"></script>
-  <script src="{{.path}}/resources/js/modules-action.js" type="text/javascript"></script>
-  <script src="{{.path}}/resources/js/ansi_up.js" type="text/javascript"></script>
-  <script>setParams({{.secret}}, {{.mods}});</script>
+  <script src="{{.Path}}/resources/js/jquery.js" type="text/javascript"></script>
+  <script src="{{.Path}}/resources/js/modules-action.js" type="text/javascript"></script>
+  <script src="{{.Path}}/resources/js/ansi_up.js" type="text/javascript"></script>
+  <script>setParams({{.Mods}});</script>
 {{end}}

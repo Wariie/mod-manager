@@ -3,16 +3,15 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 
 	"github.com/Wariie/go-woxy/com"
 	"github.com/Wariie/go-woxy/modbase"
 )
 
-var mod *modbase.ModuleImpl
+var mods *map[string]Module
 
 func main() {
 	var m modbase.ModuleImpl
@@ -26,33 +25,114 @@ func main() {
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
 	m.Init()
-	m.Register("GET", "/mod-manager", index, "WEB")
+	m.Register("/mod-manager/api", api, "")
+	m.Register("/mod-manager", index, "WEB")
 	m.Run()
 }
 
-func index(ctx *gin.Context) {
+func index(w http.ResponseWriter, r *http.Request) {
+	modList := refreshModuleList()
 
-	var mods map[string]Module
 	me := modbase.GetModManager().GetMod()
-	mods = getModules(me)
-	log.Println(mods)
 
 	running := 0
-	for k := range mods {
-		if mods[k].STATE == Online && mods[k].NAME != "hub" {
+	for k := range modList {
+		if modList[k].STATE == Online && modList[k].NAME != "hub" {
 			running++
 		}
 	}
 
-	ctx.HTML(http.StatusOK, "index", gin.H{
-		"title":              me.Name,
-		"path":               "/" + me.Name,
-		"mod_number":         len(mods) - 1,
-		"mod_number_running": running,
-		"mods":               mods,
-		"secret":             modbase.GetModManager().GetSecret(),
-	})
-	log.Println("GET / mod.v0", ctx.Request.RemoteAddr)
+	log.Println("GET / mod.v0", r.RemoteAddr)
+
+	data := IndexPage{
+		Title:            me.Name,
+		Path:             "/" + me.Name,
+		ModNumber:        len(modList) - 1,
+		ModNumberRunning: running,
+		Mods:             modList,
+		Secret:           modbase.GetModManager().GetSecret(),
+	}
+
+	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
+	err := tmpl.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		log.Fatalln("Error : ", err)
+	}
+}
+
+func api(w http.ResponseWriter, r *http.Request) {
+	t, b := com.GetCustomRequestType(r)
+	response := ""
+
+	//CHECK SESSION TOKEN
+
+	// CHECK ERROR DURING READING DATA
+	if t["error"] == "error" {
+		response = "Error reading Request"
+	} else if t["Hash"] != "" {
+		var mod Module
+		modList := *mods
+
+		if t["Type"] == "Command" {
+
+			for m := range modList {
+				if modList[m].NAME == t["Hash"] {
+					mod = modList[m]
+				}
+			}
+
+			var cr com.CommandRequest
+			cr.Decode(b)
+
+			//CHECK FOR ShutdownOrStart
+			if cr.Command == "ShutdownOrStart" {
+				log.Println(mod.STATE)
+				if mod.STATE != "UNKNOWN" && mod.STATE != "FAILED" && mod.STATE != "STOPPED" && mod.STATE != "ERROR" {
+					cr.Command = "Shutdown"
+				} else {
+					cr.Command = "Start"
+				}
+			}
+
+			//Process command
+			if cr.Command == "Status" {
+				response += string(mod.STATE)
+			} else {
+				body, err := sendCommand(mod, cr.Command, cr.Content)
+
+				if err != nil {
+					response += err.Error()
+				}
+				response += body
+			}
+			log.Println(cr.Command + " TO " + mod.NAME)
+
+		}
+	}
+	w.Write([]byte(response))
+}
+
+func refreshModuleList() map[string]Module {
+	listM := getModules(modbase.GetModManager().GetMod())
+	mods = &listM
+	return listM
+}
+
+func sendCommand(mod Module, command string, content string) (string, error) {
+	var cr com.CommandRequest
+	cr.Generate(command, mod.PK, mod.NAME, modbase.GetModManager().GetSecret())
+	var c interface{} = &cr
+	p := (c).(com.Request)
+	return com.SendRequest(modbase.GetModManager().GetMod().HubServer, p, false)
+}
+
+type IndexPage struct {
+	Title            string
+	Path             string
+	ModNumber        int
+	ModNumberRunning int
+	Mods             map[string]Module
+	Secret           string
 }
 
 func getModules(m *modbase.ModuleImpl) map[string]Module {
@@ -69,7 +149,7 @@ func getModules(m *modbase.ModuleImpl) map[string]Module {
 	return mods
 }
 
-func pouet(r *com.Request, c *gin.Context, mod *modbase.ModuleImpl) (string, error) {
+func pouet(r *com.Request, w http.ResponseWriter, re *http.Request, mod *modbase.ModuleImpl) (string, error) {
 	return "pouet", nil
 }
 
