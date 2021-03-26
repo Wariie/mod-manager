@@ -55,6 +55,7 @@ function toggleModal() {
 function sendCommands(name) {
     sp = name.split('.');
     Rname = sp[0];
+    console.log(Rname)
     for (var i = 1; i < sp.length; i++) {
         Rname += "\\." + sp[i];
     }
