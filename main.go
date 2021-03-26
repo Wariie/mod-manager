@@ -11,7 +11,7 @@ import (
 	"github.com/Wariie/go-woxy/modbase"
 )
 
-var mods *map[string]Module
+var mods *[]Module
 
 func main() {
 	var m modbase.ModuleImpl
@@ -112,7 +112,7 @@ func api(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(response))
 }
 
-func refreshModuleList() map[string]Module {
+func refreshModuleList() []Module {
 	listM := getModules(modbase.GetModManager().GetMod())
 	mods = &listM
 	return listM
@@ -131,15 +131,15 @@ type IndexPage struct {
 	Path             string
 	ModNumber        int
 	ModNumberRunning int
-	Mods             map[string]Module
+	Mods             []Module
 	Secret           string
 }
 
-func getModules(m *modbase.ModuleImpl) map[string]Module {
+func getModules(m *modbase.ModuleImpl) []Module {
 	var cr com.CommandRequest
 	cr.Generate("List", "hub", m.Name, modbase.GetModManager().GetSecret())
 	srv := m.HubServer
-	var mods map[string]Module
+	var mods []Module
 	jsonData, err := com.SendRequest(srv, &cr, true)
 	if err != nil {
 		log.Println("Error retrieving Modules :", err)
