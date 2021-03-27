@@ -18,10 +18,10 @@ func main() {
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
-	//m.SetHubAddress("127.0.0.1")
-	//m.SetHubPort("2000")
-	m.SetHubAddress("guilhem-mateo.fr")
-	m.SetHubProtocol("https")
+	m.SetHubAddress("127.0.0.1")
+	m.SetHubPort("2000")
+	//m.SetHubAddress("guilhem-mateo.fr")
+	m.SetHubProtocol("http")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
 	m.Init()
@@ -45,12 +45,13 @@ func index(w http.ResponseWriter, r *http.Request) {
 	log.Println("GET / mod.v0", r.RemoteAddr)
 
 	data := IndexPage{
-		Title:            me.Name,
-		Path:             "/" + me.Name,
-		ModNumber:        len(modList) - 1,
-		ModNumberRunning: running,
-		Mods:             modList,
-		Secret:           modbase.GetModManager().GetSecret(),
+		Title:             me.Name,
+		Path:              "/" + me.Name,
+		ModNumber:         len(modList) - 1,
+		ModNumberRunning:  running,
+		Mods:              modList,
+		Secret:            modbase.GetModManager().GetSecret(),
+		ModuleStateString: ModuleStateString,
 	}
 
 	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
@@ -86,8 +87,7 @@ func api(w http.ResponseWriter, r *http.Request) {
 
 			//CHECK FOR ShutdownOrStart
 			if cr.Command == "ShutdownOrStart" {
-				log.Println(mod.STATE)
-				if mod.STATE != "UNKNOWN" && mod.STATE != "FAILED" && mod.STATE != "STOPPED" && mod.STATE != "ERROR" {
+				if mod.STATE > Stopped && mod.STATE <= Loading {
 					cr.Command = "Shutdown"
 				} else {
 					cr.Command = "Start"
@@ -96,7 +96,7 @@ func api(w http.ResponseWriter, r *http.Request) {
 
 			//Process command
 			if cr.Command == "Status" {
-				response += string(mod.STATE)
+				response += string(ModuleStateString[mod.STATE])
 			} else {
 				body, err := sendCommand(mod, cr.Command, cr.Content)
 
@@ -127,12 +127,13 @@ func sendCommand(mod Module, command string, content string) (string, error) {
 }
 
 type IndexPage struct {
-	Title            string
-	Path             string
-	ModNumber        int
-	ModNumberRunning int
-	Mods             []Module
-	Secret           string
+	Title             string
+	Path              string
+	ModNumber         int
+	ModNumberRunning  int
+	Mods              []Module
+	Secret            string
+	ModuleStateString [7]string
 }
 
 func getModules(m *modbase.ModuleImpl) []Module {
@@ -198,15 +199,19 @@ type Route struct {
 	TO   string
 }
 
-//ModuleState - State of ModuleConfig
-type ModuleState string
+//ModuleState - ModuleConfig State
+type ModuleState int
 
+//ModuleState list
 const (
-	Unknown    ModuleState = "UNKNOWN"
-	Loading    ModuleState = "LOADING"
-	Online     ModuleState = "ONLINE"
-	Stopped    ModuleState = "STOPPED"
-	Downloaded ModuleState = "DOWNLOADED"
-	Error      ModuleState = "ERROR"
-	Failed     ModuleState = "FAILED"
+	Stopped    ModuleState = 0
+	Unknown    ModuleState = 1
+	Online     ModuleState = 2
+	Downloaded ModuleState = 3
+	Loading    ModuleState = 4
+
+	Error  ModuleState = 999
+	Failed ModuleState = 998
 )
+
+var ModuleStateString = [...]string{"STOPPED", "UNKNOWN", "ONLINE", "DOWNLOADED", "LOADING", "ERROR", "FAILED"}
