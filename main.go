@@ -19,97 +19,101 @@ func main() {
 	m.InstanceName = "mod-manager"
 
 	//m.SetHubAddress("127.0.0.1")
-	//m.SetHubPort("2000")
+	m.SetHubPort("2000")
 	m.SetHubAddress("guilhem-mateo.fr")
 	m.SetHubProtocol("https")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
 	m.Init()
-	m.Register("/mod-manager/api", api, "")
-	m.Register("/mod-manager", index, "WEB")
+	m.Register("/mod-manager", index(), "WEB")
+	m.Register("/mod-manager/api", api(), "")
 	m.Run()
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
-	modList := refreshModuleList()
+func index() modbase.HandlerFunc {
+	return modbase.HandlerFunc(func(ctx *modbase.Context) {
+		modList := refreshModuleList()
 
-	me := modbase.GetModManager().GetMod()
+		me := modbase.GetModManager().GetMod()
 
-	running := 0
-	for k := range modList {
-		if modList[k].STATE == Online && modList[k].NAME != "hub" {
-			running++
+		running := 0
+		for k := range modList {
+			if modList[k].STATE == Online && modList[k].NAME != "hub" {
+				running++
+			}
 		}
-	}
 
-	log.Println("GET / mod.v0", r.RemoteAddr)
+		log.Println("GET / mod.v0", ctx.RemoteAddr)
 
-	data := IndexPage{
-		Title:             me.Name,
-		Path:              "/" + me.Name,
-		ModNumber:         len(modList) - 1,
-		ModNumberRunning:  running,
-		Mods:              modList,
-		Secret:            modbase.GetModManager().GetSecret(),
-		ModuleStateString: ModuleStateString,
-	}
+		data := IndexPage{
+			Title:             me.Name,
+			Path:              "/" + me.Name,
+			ModNumber:         len(modList) - 1,
+			ModNumberRunning:  running,
+			Mods:              modList,
+			Secret:            modbase.GetModManager().GetSecret(),
+			ModuleStateString: ModuleStateString,
+		}
 
-	tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
-	err := tmpl.ExecuteTemplate(w, "layout", data)
-	if err != nil {
-		log.Fatalln("Error : ", err)
-	}
+		tmpl := template.Must(template.ParseFiles("./views/layouts/master.html", "./views/index.html"))
+		err := tmpl.ExecuteTemplate(ctx.ResponseWriter, "layout", data)
+		if err != nil {
+			log.Fatalln("Error : ", err)
+		}
+	})
 }
 
-func api(w http.ResponseWriter, r *http.Request) {
-	t, b := com.GetCustomRequestType(r)
-	response := ""
+func api() modbase.HandlerFunc {
+	return modbase.HandlerFunc(func(ctx *modbase.Context) {
+		t, b := com.GetCustomRequestType(ctx.Request)
+		response := ""
 
-	//CHECK SESSION TOKEN
+		//CHECK SESSION TOKEN
 
-	// CHECK ERROR DURING READING DATA
-	if t["error"] == "error" {
-		response = "Error reading Request"
-	} else if t["Hash"] != "" {
-		var mod Module
-		modList := *mods
+		// CHECK ERROR DURING READING DATA
+		if t["error"] == "error" {
+			response = "Error reading Request"
+		} else if t["Hash"] != "" {
+			var mod Module
+			modList := *mods
 
-		if t["Type"] == "Command" {
+			if t["Type"] == "Command" {
 
-			for m := range modList {
-				if modList[m].NAME == t["Hash"] {
-					mod = modList[m]
+				for m := range modList {
+					if modList[m].NAME == t["Hash"] {
+						mod = modList[m]
+					}
 				}
-			}
 
-			var cr com.CommandRequest
-			cr.Decode(b)
+				var cr com.CommandRequest
+				cr.Decode(b)
 
-			//CHECK FOR ShutdownOrStart
-			if cr.Command == "ShutdownOrStart" {
-				if mod.STATE > Stopped && mod.STATE <= Loading {
-					cr.Command = "Shutdown"
+				//CHECK FOR ShutdownOrStart
+				if cr.Command == "ShutdownOrStart" {
+					if mod.STATE > Stopped && mod.STATE <= Loading {
+						cr.Command = "Shutdown"
+					} else {
+						cr.Command = "Start"
+					}
+				}
+
+				//Process command
+				if cr.Command == "Status" {
+					response += string(ModuleStateString[mod.STATE])
 				} else {
-					cr.Command = "Start"
+					body, err := sendCommand(mod, cr.Command, cr.Content)
+
+					if err != nil {
+						response += err.Error()
+					}
+					response += body
 				}
+				log.Println(cr.Command + " TO " + mod.NAME)
+
 			}
-
-			//Process command
-			if cr.Command == "Status" {
-				response += string(ModuleStateString[mod.STATE])
-			} else {
-				body, err := sendCommand(mod, cr.Command, cr.Content)
-
-				if err != nil {
-					response += err.Error()
-				}
-				response += body
-			}
-			log.Println(cr.Command + " TO " + mod.NAME)
-
 		}
-	}
-	w.Write([]byte(response))
+		ctx.ResponseWriter.Write([]byte(response))
+	})
 }
 
 func refreshModuleList() []Module {
@@ -199,10 +203,10 @@ type Route struct {
 	TO   string
 }
 
-//ModuleState - ModuleConfig State
+// ModuleState - ModuleConfig State
 type ModuleState int
 
-//ModuleState list
+// ModuleState list
 const (
 	Stopped    ModuleState = 0
 	Unknown    ModuleState = 1
