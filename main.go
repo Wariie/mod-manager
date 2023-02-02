@@ -18,10 +18,10 @@ func main() {
 	m.Name = "mod-manager"
 	m.InstanceName = "mod-manager"
 
-	//m.SetHubAddress("127.0.0.1")
+	m.SetHubAddress("127.0.0.1")
 	m.SetHubPort("2000")
-	m.SetHubAddress("guilhem-mateo.fr")
-	m.SetHubProtocol("https")
+	//m.SetHubAddress("guilhem-mateo.fr")
+	m.SetHubProtocol("http")
 	m.SetPort("2001")
 	m.SetCommand("pouet", pouet)
 	m.Init()
@@ -30,15 +30,15 @@ func main() {
 	m.Run()
 }
 
-func index() modbase.HandlerFunc {
-	return modbase.HandlerFunc(func(ctx *modbase.Context) {
+func index() com.HandlerFunc {
+	return com.HandlerFunc(func(ctx *com.Context) {
 		modList := refreshModuleList()
 
 		me := modbase.GetModManager().GetMod()
 
 		running := 0
 		for k := range modList {
-			if modList[k].STATE == Online && modList[k].NAME != "hub" {
+			if modList[k].STATE == com.Online && modList[k].NAME != "hub" {
 				running++
 			}
 		}
@@ -63,8 +63,8 @@ func index() modbase.HandlerFunc {
 	})
 }
 
-func api() modbase.HandlerFunc {
-	return modbase.HandlerFunc(func(ctx *modbase.Context) {
+func api() com.HandlerFunc {
+	return com.HandlerFunc(func(ctx *com.Context) {
 		t, b := com.GetCustomRequestType(ctx.Request)
 		response := ""
 
@@ -90,7 +90,7 @@ func api() modbase.HandlerFunc {
 
 				//CHECK FOR ShutdownOrStart
 				if cr.Command == "ShutdownOrStart" {
-					if mod.STATE > Stopped && mod.STATE <= Loading {
+					if mod.STATE > com.Stopped && mod.STATE <= com.Loading {
 						cr.Command = "Shutdown"
 					} else {
 						cr.Command = "Start"
@@ -143,14 +143,13 @@ type IndexPage struct {
 func getModules(m *modbase.ModuleImpl) []Module {
 	var cr com.CommandRequest
 	cr.Generate("List", "hub", m.Name, modbase.GetModManager().GetSecret())
-	srv := m.HubServer
 	var mods []Module
-	jsonData, err := com.SendRequest(srv, &cr, true)
+	jsonData, err := com.SendRequest(m.HubServer, &cr, true)
 	if err != nil {
-		log.Println("Error retrieving Modules :", err)
+		log.Println("Error retrieving Modules : ", err)
+		return mods
 	}
 	json.NewDecoder(bytes.NewBufferString(jsonData)).Decode(&mods)
-
 	return mods
 }
 
@@ -161,14 +160,14 @@ func pouet(r *com.Request, w http.ResponseWriter, re *http.Request, mod *modbase
 /*Module - Module configuration */
 type Module struct {
 	AUTH         ModuleAuthConfig
-	BINDING      ServerConfig
+	BINDING      com.ServerConfig
 	COMMANDS     []string
 	EXE          ModuleExecConfig
 	NAME         string
 	pid          int
 	PK           string
 	RESOURCEPATH string
-	STATE        ModuleState
+	STATE        com.ModuleState
 	TYPES        string
 	VERSION      int
 }
@@ -182,40 +181,10 @@ type ModuleExecConfig struct {
 	REMOTE     bool
 }
 
-/*ServerConfig - Server configuration*/
-type ServerConfig struct {
-	ADDRESS  string
-	PATH     []Route
-	PORT     string
-	PROTOCOL string
-	ROOT     string
-}
-
 /*ModuleAuthConfig - Auth configuration*/
 type ModuleAuthConfig struct {
 	ENABLED bool
 	TYPE    string
 }
-
-// Route - Route redirection
-type Route struct {
-	FROM string
-	TO   string
-}
-
-// ModuleState - ModuleConfig State
-type ModuleState int
-
-// ModuleState list
-const (
-	Stopped    ModuleState = 0
-	Unknown    ModuleState = 1
-	Online     ModuleState = 2
-	Downloaded ModuleState = 3
-	Loading    ModuleState = 4
-
-	Error  ModuleState = 999
-	Failed ModuleState = 998
-)
 
 var ModuleStateString = [...]string{"STOPPED", "UNKNOWN", "ONLINE", "DOWNLOADED", "LOADING", "ERROR", "FAILED"}
